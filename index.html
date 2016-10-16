@@ -4,31 +4,52 @@
     <meta charset="UTF-8">
     <title>StarWars RPG Game</title>
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+    <link href="https://fonts.googleapis.com/css?family=Bungee+Inline|Noto+Sans" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 </head>
 <body>
-    <section class="first-row">
-        <div class="first-row-players">
+    <section class="select-character-section">
+        <h1 class="character-select-title">Select Your Character</h1>
+        <div class="characters-to-select">
+            
             <div class="character">
-                <img src="#" alt="luke">
+                <p class="character-name">Luke Skywalker</p>
+                <img class= "character-pic" src="assets/images/luke.jpg" alt="luke">
+                <p class="health">test<p>
             </div>
-             <div class="character">
-                 <img src="#" alt="darth vader">
+            <div class="character">
+                <p class="character-name">Darth Vader</p>
+                <img class= "character-pic" src="assets/images/vader.jpg" alt="darth vader">
+                <p class="health">test<p>
             </div>
-             <div class="character">
-                 <img src="#" alt="emperor">
+            <div class="character">
+                <p class="character-name">Emperor Palpatine</p>
+                <img class= "character-pic" src="assets/images/emperor.jpg" alt="emperor palpatine">
+                <p class="health">test<p>
             </div>
-             <div class="character" alt="leia">
-                 <img src="#">
+            <div class="character" alt="leia">
+                <p class="character-name">Princess Leia</p>
+                <img class= "character-pic" src="assets/images/leia.jpg" alt="pricess leia">
+                <p class="health">test<p>
             </div>
         </div>
     </section>
-    <section class="second-row">
-        <div class="second-row-players"></div>
+    <section class="your-character-section">
+        <h1>Your Character</h1>
+        <div class="your-character"></div>
     </section>
-    <section class="third-row">
-        <div class="third-row-players"></div>
+    <section class="enemies-section">
+        <h1>Enemies Available to Attack</h1>
+        <div class="enemies-to-attack"></div>
+    </section>
+    <section class="attack-section">
+        <h1>Attack Section</h1>
+        <button class ="button attack-button" type="button">Click Me!</button>
+    </section>
+    <section class="defender-section">
+        <h1>Defender</h1>
+        <div class="defender-area"></div>
     </section>
 
     <script src="assets/javascript/game.js"></script>

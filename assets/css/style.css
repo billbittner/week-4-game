@@ -1,0 +1,49 @@
+section {
+    overflow: auto;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Bungee Inline', cursive;
+    font-weight: bold;
+    line-height: 2;
+}
+
+h1 {
+    font-size: xx-large;
+}
+
+h2 {
+    font-size: x-large;
+}
+
+h3 {
+    font-size: large;
+}
+
+p {
+    font-family: 'Noto Sans', sans-serif;
+    line-height: 1.5;
+}
+
+.character {
+    padding: 0px 20px 0px 20px;
+    border: 2px solid green;
+    margin: 10px;
+    float: left;
+    /*overflow: auto;*/
+    background-color: yellow;
+}
+
+.player {
+    background-color: green;
+}
+
+.opponent {
+    background-color: red;
+}
+
+.character-pic {
+    height: 200px;
+    width: 200px;
+}
+

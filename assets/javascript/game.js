@@ -3,25 +3,59 @@ $(document).ready(function(){
     var i;
     var attackPowerLibrary = [30, 10, 10, 10];
     var gameStatus = "select player";
+    var characterList = [ 
+        {
+            name: "Luke Skywalker",
+            picSrc: "assets/images/luke.jpg",
+            picAlt: "Luke Skywalker"
+        },
+        {
+            name: "Darth Vader",
+            picSrc: "assets/images/vader.jpg",
+            picAlt: "Darth Vader"
+        },
+        {
+            name: "Emperor Palpatine",
+            picSrc: "assets/images/emperor.jpg",
+            picAlt: "Emperor Palpatine"
+        },
+        {
+            name: "Princess Leia",
+            picSrc: "assets/images/leia.jpg",
+            picAlt: "Princess Leia"
+        },
+    ];
 
-    /* function createCharacters(listOfCharacters){
-        for(i = 0; i < listOfCharacters.length; i++) {
+    function createCharacters(charactersToCreate){
+        for(i = 0; i < charactersToCreate.length; i++) {
             //create player div
-            var newPlayer = ("<div>");
+            var newPlayer = $("<div>");
             newPlayer.addClass("character");
-            newplayer.attr("name", listOfCharacters[i].name);
-            newPlayer.data("attackPower", #);
-            newPlayer.data("HP", #);
-            newPlayer.data("counterAttackPower", #);
-            newplayer.prepend('<img id="theImg" src="theImg.png" />');
+            // newPlayer.data("attackPower", #);
+            // newPlayer.data("HP", #);
+            // newPlayer.data("counterAttackPower", #);
             $(".characters-to-select").append(newPlayer);
+
+            //create player characer title
+            var playerTitle = $("<p>");
+            playerTitle.addClass("character-title");
+            playerTitle.html(charactersToCreate[i].name);
+            playerTitle.appendTo(newPlayer);
+
             //create player image
-            playerImage = ("<img>");
-            playerImage.attr("src", "#");
-            playerImage.attr("alt", "#");
-            newplayer.preAppend(playerImage);
-         };
-     }*/
+            var playerImage = $("<img>");
+            playerImage.addClass("character-pic");
+            playerImage.attr("src", charactersToCreate[i].picSrc);
+            playerImage.attr("alt", charactersToCreate[i].picAlt);
+            playerImage.insertAfter(playerTitle);
+
+            //create player health
+            var playerHealth = $("<p>");
+            playerHealth.addClass("health");
+            playerHealth.html("health: ?");
+            playerHealth.insertAfter(playerImage);
+        };
+    }
 
     //declare functions
     function setPlayerProperties(clickedPlayer) {
@@ -52,14 +86,19 @@ $(document).ready(function(){
         });
     };
     function resetGame(){
+        //reset variables that need to be reset
         var attackPowerLibrary = [30, 10, 10, 10];
         var gameStatus = "select player";
+        //create the characters
+        createCharacters(characterList);
+        //hide the restart button
         $(".restart-button").hide();
+        
     };
 
     //run the game
-    resetGame();
-
+    resetGame();  //DRY???
+    //assign on click events
     $(".character").on("click", function(){
         console.log("a character was clicked");
         if (gameStatus === "select player") {

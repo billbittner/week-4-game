@@ -121,6 +121,7 @@ $(document).ready(function(){
                     //give direction to the player
                     alert("choose a new defender!");
                 } else {
+                    //display that the player has won!
                     alert("congratulations!  you now rule the galaxy!")
                     //show reset button
                     $(".restart-button").show(); 
@@ -142,6 +143,7 @@ $(document).ready(function(){
 
                 //see if the player was defeated
                 if($(".player").data("HP") < 0 ){
+                    //display that the player was defeated
                     alert("you were defeated!");
                     //show reset button
                     $(".restart-button").show();                   
@@ -155,5 +157,5 @@ $(document).ready(function(){
         $(".character").each().remove();
         //restart game
         resetGame();
-    };
+    });
 });

@@ -1,8 +1,27 @@
 
 $(document).ready(function(){
+    //declare variables 
     var i;
-    var attackPowerLibrary = [30, 10, 10, 10];
     var gameStatus = "select player";
+    var playerStats = {
+        attackPower: 30,
+        attackPowerIncrease: 30,
+        hitPoints: 120
+    };
+    var opponentStats = [
+        {
+            counterAttack: 5, 
+            hitPoints: 100
+        },
+        {
+            counterAttack: 10, 
+            hitPoints: 150
+        },
+        {
+            counterAttack: 15, 
+            hitPoints: 200
+        }
+    ];
     var characterList = [ 
         {
             name: "Luke Skywalker",
@@ -25,15 +44,22 @@ $(document).ready(function(){
             picAlt: "Princess Leia"
         },
     ];
-
+    //declare functions 
+    function resetGame(){
+        //create the characters
+        createCharacters(characterList);
+        //reset game status
+        gameStatus = "select player";
+        //hide the restart button
+        $(".restart-button").hide();
+        console.log("I reset the game.  Game status is: " + gameStatus);
+    };
     function createCharacters(charactersToCreate){
         for(i = 0; i < charactersToCreate.length; i++) {
             //create player div
             var newPlayer = $("<div>");
             newPlayer.addClass("character");
-            // newPlayer.data("attackPower", #);
-            // newPlayer.data("HP", #);
-            // newPlayer.data("counterAttackPower", #);
+            newPlayer.data("name", charactersToCreate[i].name); //only necessary for debug
             $(".characters-to-select").append(newPlayer);
 
             //create player characer title
@@ -52,21 +78,21 @@ $(document).ready(function(){
             //create player health
             var playerHealth = $("<p>");
             playerHealth.addClass("health");
-            playerHealth.html("health: ?");
+            playerHealth.html("Health: ?");
             playerHealth.insertAfter(playerImage);
         };
-    }
+        console.log("i created all the characters");
+    };
 
     //declare functions
     function setPlayerProperties(clickedPlayer) {
         clickedPlayer.addClass("player");
         //set attack power 
-        clickedPlayer.data("attackPower", attackPowerLibrary[0]);
-        attackPowerLibrary.splice(0,1);
+        clickedPlayer.data("attackPower", playerStats.attackPower);
         //set attack power increase
-        clickedPlayer.data("attackPowerIncrease", clickedPlayer.data("attackPower"));
+        clickedPlayer.data("attackPowerIncrease", playerStats.attackPowerIncrease);
         //set hp
-        clickedPlayer.data("HP", 100);
+        clickedPlayer.data("HP", playerStats.hitPoints);
         //display HP
         $(".player > .health").html("Health: " + $(".player").data("HP"));
     };
@@ -74,30 +100,22 @@ $(document).ready(function(){
         $(".character").not(".player").each(function () {
             //set class to opponent
             $(this).addClass("opponent");
-            //assign a random counter attack power
-            var chooseAttackIndex = (Math.floor((Math.random() * attackPowerLibrary.length) + 1) - 1);
-            $(this).data("counterAttackPower", attackPowerLibrary[chooseAttackIndex]);
-            attackPowerLibrary.splice(chooseAttackIndex,1);
-            console.log("the chosen counter attack = " + $(this).data("counterAttackPower"));
-            //assign HP
-            var startingHP = 100;
-            $(this).data("HP", startingHP);
-            console.log("the starting HP is = " + $(this).data("HP"));
+            //assign an element from the opponent stats array
+            var chooseStats = (Math.floor((Math.random() * opponentStats.length) + 1) - 1);
+            //assign the counter attack from this element to the character
+            $(this).data("counterAttackPower", opponentStats[chooseStats].counterAttack);
+            console.log($(this).data("name") +" counter attack = " + $(this).data("counterAttackPower"));
+            //assign the hit points from this element to the character
+            $(this).data("HP", opponentStats[chooseStats].hitPoints);
+            console.log($(this).data("name") +" starting HP = " + $(this).data("HP"));
+            //remove one element from the stats array
+            opponentStats.splice(chooseStats,1);
         });
-    };
-    function resetGame(){
-        //reset variables that need to be reset
-        var attackPowerLibrary = [30, 10, 10, 10];
-        var gameStatus = "select player";
-        //create the characters
-        createCharacters(characterList);
-        //hide the restart button
-        $(".restart-button").hide();
-        
     };
 
     //run the game
     resetGame();  //DRY???
+    
     //assign on click events
     $(".character").on("click", function(){
         console.log("a character was clicked");
@@ -130,6 +148,7 @@ $(document).ready(function(){
             //do nothing
         };
     });
+
     $(".attack-button").on("click", function(){
         if (gameStatus === "fight defender"){
             //define variables
@@ -161,11 +180,10 @@ $(document).ready(function(){
                     alert("choose a new defender!");
                 } else {
                     //display that the player has won!
-                    alert("congratulations!  you now rule the galaxy!")
+                    alert("congratulations! You now rule the galaxy!  Click reset to play again.")
                     //show reset button
                     $(".restart-button").show(); 
                 };
-                
             //if the bad guy was not defeated, do his counter attck
             } else {
                 //do all the counter attack calculations and updates
@@ -179,9 +197,8 @@ $(document).ready(function(){
                 $(".player > .health").html("Health: " + $(".player").data("HP"));
                 //alert descriptive text
                 alert("you were counter attacked by " + counterAttack + " damage.");
-
                 //see if the player was defeated
-                if($(".player").data("HP") < 0 ){
+                if($(".player").data("HP") <= 0 ){
                     //display that the player was defeated
                     alert("you were defeated!");
                     //show reset button
@@ -191,10 +208,14 @@ $(document).ready(function(){
             };
         };
     });
+
     $(".restart-button").on("click", function(){
         //remove all characters
-        $(".character").each().remove();
+        $(".character").each( function() {
+            $(this).remove();
+        });
         //restart game
         resetGame();
     });
+
 });

@@ -3,6 +3,8 @@ $(document).ready(function(){
     //declare variables 
     var i;
     var gameStatus;
+    var playerStats = {};
+    var opponentStats = [];
     var characterList = [ 
         {
             name: "Luke Skywalker",
@@ -25,27 +27,29 @@ $(document).ready(function(){
             picAlt: "Princess Leia"
         },
     ];
-    var playerStats = {
-        attackPower: 30,
-        attackPowerIncrease: 30,
-        hitPoints: 120
-    };
-    var opponentStats = [
-        {
-            counterAttack: 5, 
-            hitPoints: 100
-        },
-        {
-            counterAttack: 10, 
-            hitPoints: 150
-        },
-        {
-            counterAttack: 15, 
-            hitPoints: 200
-        }
-    ];
 
     //declare functions 
+    function setNonPersistentVariables(){
+        playerStats = {
+            attackPower: 30,
+            attackPowerIncrease: 30,
+            hitPoints: 120
+        };
+        opponentStats = [
+            {
+                counterAttack: 10, 
+                hitPoints: 100
+            },
+            {
+                counterAttack: 20, 
+                hitPoints: 150
+            },
+            {
+                counterAttack: 30, 
+                hitPoints: 200
+            }
+        ];
+    };
     function createCharacters(charactersToCreate){
         for(i = 0; i < charactersToCreate.length; i++) {
             //create player div
@@ -53,20 +57,17 @@ $(document).ready(function(){
             newPlayer.addClass("character");
             newPlayer.data("name", charactersToCreate[i].name); //only necessary for debug
             $(".characters-to-select").append(newPlayer);
-
             //create player characer title
             var playerTitle = $("<p>");
             playerTitle.addClass("character-title");
             playerTitle.html(charactersToCreate[i].name);
             playerTitle.appendTo(newPlayer);
-
             //create player image
             var playerImage = $("<img>");
             playerImage.addClass("character-pic");
             playerImage.attr("src", charactersToCreate[i].picSrc);
             playerImage.attr("alt", charactersToCreate[i].picAlt);
             playerImage.insertAfter(playerTitle);
-
             //create player health
             var playerHealth = $("<p>");
             playerHealth.addClass("health");
@@ -105,27 +106,6 @@ $(document).ready(function(){
             opponentStats.splice(chooseStats,1);
         });
     };
-    function resetVariables(){
-        playerStats = {
-            attackPower: 30,
-            attackPowerIncrease: 30,
-            hitPoints: 120
-        };
-        opponentStats = [
-            {
-                counterAttack: 5, 
-                hitPoints: 100
-            },
-            {
-                counterAttack: 10, 
-                hitPoints: 150
-            },
-            {
-                counterAttack: 15, 
-                hitPoints: 200
-            }
-        ];
-    };
     function restartGame(){
         //remove all characters
         $(".character").each( function() {
@@ -134,7 +114,7 @@ $(document).ready(function(){
             console.log("i removed " + $(this).data("name"));
         });
         //reset the variables as necessary
-        resetVariables();
+        setNonPersistentVariables();
         //create the characters
         createCharacters(characterList);
         //restart game status
@@ -145,6 +125,8 @@ $(document).ready(function(){
     };
 
     //run the game
+    //set non-permanent variables
+    setNonPersistentVariables();
     //create the characters
     createCharacters(characterList);
     //set game status

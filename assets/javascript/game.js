@@ -2,26 +2,7 @@
 $(document).ready(function(){
     //declare variables 
     var i;
-    var gameStatus = "select player";
-    var playerStats = {
-        attackPower: 30,
-        attackPowerIncrease: 30,
-        hitPoints: 120
-    };
-    var opponentStats = [
-        {
-            counterAttack: 5, 
-            hitPoints: 100
-        },
-        {
-            counterAttack: 10, 
-            hitPoints: 150
-        },
-        {
-            counterAttack: 15, 
-            hitPoints: 200
-        }
-    ];
+    var gameStatus;
     var characterList = [ 
         {
             name: "Luke Skywalker",
@@ -44,16 +25,27 @@ $(document).ready(function(){
             picAlt: "Princess Leia"
         },
     ];
-    //declare functions 
-    function resetGame(){
-        //create the characters
-        createCharacters(characterList);
-        //reset game status
-        gameStatus = "select player";
-        //hide the restart button
-        $(".restart-button").hide();
-        console.log("I reset the game.  Game status is: " + gameStatus);
+    var playerStats = {
+        attackPower: 30,
+        attackPowerIncrease: 30,
+        hitPoints: 120
     };
+    var opponentStats = [
+        {
+            counterAttack: 5, 
+            hitPoints: 100
+        },
+        {
+            counterAttack: 10, 
+            hitPoints: 150
+        },
+        {
+            counterAttack: 15, 
+            hitPoints: 200
+        }
+    ];
+
+    //declare functions 
     function createCharacters(charactersToCreate){
         for(i = 0; i < charactersToCreate.length; i++) {
             //create player div
@@ -81,6 +73,7 @@ $(document).ready(function(){
             playerHealth.html("Health: ?");
             playerHealth.insertAfter(playerImage);
         };
+        //console log
         console.log("i created all the characters");
     };
 
@@ -112,12 +105,56 @@ $(document).ready(function(){
             opponentStats.splice(chooseStats,1);
         });
     };
+    function resetVariables(){
+        playerStats = {
+            attackPower: 30,
+            attackPowerIncrease: 30,
+            hitPoints: 120
+        };
+        opponentStats = [
+            {
+                counterAttack: 5, 
+                hitPoints: 100
+            },
+            {
+                counterAttack: 10, 
+                hitPoints: 150
+            },
+            {
+                counterAttack: 15, 
+                hitPoints: 200
+            }
+        ];
+    };
+    function restartGame(){
+        //remove all characters
+        $(".character").each( function() {
+            console.log("i will remove " + $(this).data("name"));
+            $(this).remove();
+            console.log("i removed " + $(this).data("name"));
+        });
+        //reset the variables as necessary
+        resetVariables();
+        //create the characters
+        createCharacters(characterList);
+        //restart game status
+        gameStatus = "select player";
+        //hide the restart button
+        $(".restart-button").hide();
+        console.log("I restarted the game.  Game status is: " + gameStatus);
+    };
 
     //run the game
-    resetGame();  //DRY???
-    
+    //create the characters
+    createCharacters(characterList);
+    //set game status
+    gameStatus = "select player";
+    //hide the restart button
+    $(".restart-button").hide();
+    console.log("I started the game.  Game status is: " + gameStatus);
+
     //assign on click events
-    $(".character").on("click", function(){
+    $(".characters-to-select").on("click",".character", function(){  //$(".character").on("click", function(){
         console.log("a character was clicked");
         if (gameStatus === "select player") {
             console.log("& it was the first character clicked");
@@ -128,24 +165,23 @@ $(document).ready(function(){
             console.log("the player should have moved");
             //set the properties of the other characters
             setOpponentProperties();
-            //move opponents to the proper row
+            //move opponents to the opponent area
             $(".opponent").appendTo(".enemies-to-attack");
             console.log("the enemeies should have moved");
             //flip the gameStatus switch
             gameStatus = "select opponent";
-        } else if (gameStatus === "select opponent"){
-            if( $(this).hasClass("opponent") ){
-                //assign the character the defender class
-                $(this).addClass("defender");
-                //move the character to the defender area;
-                $(".defender").appendTo(".defender-area");
-                //display HP
-                $(".defender > .health").html("Health: " + $(this).data("HP"));
-                //flip the gamestatus switch
-                gameStatus = "fight defender";
-            };
-        } else if (gameStatus === "fight defender") {
-            //do nothing
+        };
+    });
+    $(".enemies-to-attack").on("click",".character", function(){
+        if (gameStatus === "select opponent"){
+            //assign the character the defender class
+            $(this).addClass("defender");
+            //move the character to the defender area;
+            $(".defender").appendTo(".defender-area");
+            //display HP
+            $(".defender > .health").html("Health: " + $(this).data("HP"));
+            //flip the gamestatus switch
+            gameStatus = "fight defender";
         };
     });
 
@@ -174,14 +210,14 @@ $(document).ready(function(){
                 $(".defender").remove()
                 //see if here are any more defenders
                 if ($(".opponent").length > 0) {
-                    //reset game status
+                    //restart game status
                     gameStatus = "select opponent";
                     //give direction to the player
                     alert("choose a new defender!");
                 } else {
                     //display that the player has won!
-                    alert("congratulations! You now rule the galaxy!  Click reset to play again.")
-                    //show reset button
+                    alert("congratulations! You now rule the galaxy!  Click restart to play again.")
+                    //show restart button
                     $(".restart-button").show(); 
                 };
             //if the bad guy was not defeated, do his counter attck
@@ -201,7 +237,7 @@ $(document).ready(function(){
                 if($(".player").data("HP") <= 0 ){
                     //display that the player was defeated
                     alert("you were defeated!");
-                    //show reset button
+                    //show restart button
                     $(".restart-button").show();                   
                 };
 
@@ -210,12 +246,10 @@ $(document).ready(function(){
     });
 
     $(".restart-button").on("click", function(){
-        //remove all characters
-        $(".character").each( function() {
-            $(this).remove();
-        });
+        //console log
+        console.log("restarting game");      
         //restart game
-        resetGame();
+        restartGame();
     });
 
 });

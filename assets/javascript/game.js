@@ -3,8 +3,7 @@ $(document).ready(function(){
     //declare variables 
     var i;
     var gameStatus;
-    var playerStats = {};
-    var opponentStats = [];
+    var characterStats = [];
     var characterOne = {
             name: "Luke Skywalker",
             picSrc: "assets/images/luke.jpg",
@@ -29,22 +28,21 @@ $(document).ready(function(){
 
     //declare functions 
     function setStats(){
-        playerStats = {
-            attackPower: 30,
-            attackPowerIncrease: 30,
-            hitPoints: 120
-        };
-        opponentStats = [
+        characterStats = [
             {
-                counterAttack: 10, 
+                attackPower: 10,
                 hitPoints: 100
             },
             {
-                counterAttack: 20, 
+                attackPower: 15,
+                hitPoints: 120
+            },
+            {
+                attackPower: 20,
                 hitPoints: 150
             },
             {
-                counterAttack: 30, 
+                attackPower: 30,
                 hitPoints: 200
             }
         ];
@@ -80,12 +78,16 @@ $(document).ready(function(){
     //declare functions
     function setPlayerProperties(clickedPlayer) {
         clickedPlayer.addClass("player");
+        //choose an element from the opponent stats array
+        var stats = (Math.floor(Math.random() * characterStats.length));
         //set attack power 
-        clickedPlayer.data("attackPower", playerStats.attackPower);
+        clickedPlayer.data("attackPower", characterStats[stats].attackPower);
         //set attack power increase
-        clickedPlayer.data("attackPowerIncrease", playerStats.attackPowerIncrease);
+        clickedPlayer.data("attackPowerIncrease", characterStats[stats].attackPower);
         //set hp
-        clickedPlayer.data("HP", playerStats.hitPoints);
+        clickedPlayer.data("HP", characterStats[stats].hitPoints);
+        //remove the chosen element from the stats array
+        characterStats.splice(stats,1);
         //display HP
         $(".player > .health").html("Health: " + $(".player").data("HP"));
     };
@@ -93,16 +95,16 @@ $(document).ready(function(){
         $(".character").not(".player").each(function () {
             //set class to opponent
             $(this).addClass("opponent");
-            //assign an element from the opponent stats array
-            var chooseStats = (Math.floor(Math.random() * opponentStats.length));
+            //choose an element from the opponent stats array
+            var stats = (Math.floor(Math.random() * characterStats.length));
             //assign the counter attack from this element to the character
-            $(this).data("counterAttackPower", opponentStats[chooseStats].counterAttack);
-            console.log($(this).data("name") +" counter attack = " + $(this).data("counterAttackPower"));
+            $(this).data("counterAttackPower", characterStats[stats].attackPower);
+                //console.log($(this).data("name") +" counter attack = " + $(this).data("counterAttackPower"));
             //assign the hit points from this element to the character
-            $(this).data("HP", opponentStats[chooseStats].hitPoints);
-            console.log($(this).data("name") +" starting HP = " + $(this).data("HP"));
-            //remove one element from the stats array
-            opponentStats.splice(chooseStats,1);
+            $(this).data("HP", characterStats[stats].hitPoints);
+                //console.log($(this).data("name") +" starting HP = " + $(this).data("HP"));
+            //remove the chosen element from the stats array
+            characterStats.splice(stats,1);
         });
     };
     function restartGame(){

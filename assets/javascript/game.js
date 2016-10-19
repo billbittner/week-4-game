@@ -5,31 +5,30 @@ $(document).ready(function(){
     var gameStatus;
     var playerStats = {};
     var opponentStats = [];
-    var characterList = [ 
-        {
+    var characterOne = {
             name: "Luke Skywalker",
             picSrc: "assets/images/luke.jpg",
             picAlt: "Luke Skywalker"
-        },
-        {
+        };
+    var characterTwo = {
             name: "Darth Vader",
             picSrc: "assets/images/vader.jpg",
             picAlt: "Darth Vader"
-        },
-        {
+        };
+    var characterThree = {
             name: "Emperor Palpatine",
             picSrc: "assets/images/emperor.jpg",
             picAlt: "Emperor Palpatine"
-        },
-        {
+        };
+    var characterFour = {
             name: "Princess Leia",
             picSrc: "assets/images/leia.jpg",
             picAlt: "Princess Leia"
-        },
-    ];
+        };
+    var characterList = [characterOne, characterTwo, characterThree, characterFour];
 
     //declare functions 
-    function setNonPersistentVariables(){
+    function setStats(){
         playerStats = {
             attackPower: 30,
             attackPowerIncrease: 30,
@@ -95,7 +94,7 @@ $(document).ready(function(){
             //set class to opponent
             $(this).addClass("opponent");
             //assign an element from the opponent stats array
-            var chooseStats = (Math.floor((Math.random() * opponentStats.length) + 1) - 1);
+            var chooseStats = (Math.floor(Math.random() * opponentStats.length));
             //assign the counter attack from this element to the character
             $(this).data("counterAttackPower", opponentStats[chooseStats].counterAttack);
             console.log($(this).data("name") +" counter attack = " + $(this).data("counterAttackPower"));
@@ -114,7 +113,7 @@ $(document).ready(function(){
             console.log("i removed " + $(this).data("name"));
         });
         //reset the variables as necessary
-        setNonPersistentVariables();
+        setStats();
         //create the characters
         createCharacters(characterList);
         //restart game status
@@ -133,7 +132,7 @@ $(document).ready(function(){
 
     //run the game
     //set non-permanent variables
-    setNonPersistentVariables();
+    setStats();
     //create the characters
     createCharacters(characterList);
     //set game status
@@ -146,7 +145,6 @@ $(document).ready(function(){
     $(".characters-to-select").on("click",".character", function(){  //$(".character").on("click", function(){
         console.log("a character was clicked");
         if (gameStatus === "select player") {
-            console.log("& it was the first character clicked");
             //set the properties of this character
             setPlayerProperties($(this));
             //move character to proper row

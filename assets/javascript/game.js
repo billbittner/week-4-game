@@ -119,9 +119,16 @@ $(document).ready(function(){
         createCharacters(characterList);
         //restart game status
         gameStatus = "select player";
+        //clear game updates
+        clearGameUpdates();
         //hide the restart button
         $(".restart-button").hide();
         console.log("I restarted the game.  Game status is: " + gameStatus);
+    };
+    function clearGameUpdates() {
+        $(".game-updates").each( function() {
+            $(this).html("");
+        });
     };
 
     //run the game
@@ -182,12 +189,12 @@ $(document).ready(function(){
             //display defender's new health
             $(".defender > .health").html("Health: " + $(".defender").data("HP"));
             //alert description text
-            alert("your attack did " + attackPower + " damage.");
-            
+            $(".game-updates-line-one").html("your attack did " + attackPower + " damage.");
             //check to see if the bad guy is defeated
             if ($(".defender").data("HP") <= 0) {
                 //alert that you won
-                alert("you defeated the defender!");
+                clearGameUpdates();
+                $(".game-updates-line-one").html("you defeated the defender!");
                 //remove the bad guy's div and all contents from the game
                 $(".defender").remove()
                 //see if here are any more defenders
@@ -195,10 +202,10 @@ $(document).ready(function(){
                     //restart game status
                     gameStatus = "select opponent";
                     //give direction to the player
-                    alert("choose a new defender!");
+                    $(".game-updates-line-two").html("choose a new defender!");
                 } else {
                     //display that the player has won!
-                    alert("congratulations! You now rule the galaxy!  Click restart to play again.")
+                    $(".game-updates-line-two").html("congratulations! You now rule the galaxy!  Click restart to play again.")
                     //show restart button
                     $(".restart-button").show(); 
                 };
@@ -207,18 +214,18 @@ $(document).ready(function(){
                 //do all the counter attack calculations and updates
                 //increase the attack power by attack power increase
                 $(".player").data("attackPower", (attackPower + attackIncrease));
-                //alert description text
-                alert("your attack increased to: " + $(".player").data("attackPower"));
                 //oposing player attacks
                 $(".player").data("HP", (playerHP - counterAttack));
                 //display your new health
                 $(".player > .health").html("Health: " + $(".player").data("HP"));
                 //alert descriptive text
-                alert("you were counter attacked by " + counterAttack + " damage.");
+                $(".game-updates-line-two").html("you were counter attacked by " + counterAttack + " damage.");
                 //see if the player was defeated
                 if($(".player").data("HP") <= 0 ){
+                    clearGameUpdates();
                     //display that the player was defeated
-                    alert("you were defeated!");
+                    $(".game-updates-line-one").html("you were defeated!");
+                    $(".game-updates-line-two").html("Click restart to play again.")
                     //show restart button
                     $(".restart-button").show();                   
                 };

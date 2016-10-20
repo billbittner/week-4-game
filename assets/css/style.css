@@ -1,11 +1,19 @@
+body {
+    background-image: url("../images/background.jpg");
+    background-color: black;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
 section {
-    overflow: auto;
+    overflow: hidden;
 }
 
 h1, h2, h3, h4 {
     font-family: 'Bungee Inline', cursive;
     font-weight: bold;
     line-height: 1.5;
+    color: yellow;
 }
 
 h1 {
@@ -30,16 +38,19 @@ p {
     border: 2px solid green;
     margin: 10px;
     float: left;
-    /*overflow: auto;*/
-    background-color: yellow;
-}
-
-.player {
-    background-color: green;
+    background-color: white;
+    text-align: center;
 }
 
 .opponent {
     background-color: red;
+    border: 2px solid black;
+}
+
+.defender {
+    background-color: black;
+    border: 2px solid green;
+    color: white;
 }
 
 .character-pic {
@@ -49,5 +60,6 @@ p {
 
 .game-updates {
     clear: both;
+    color: yellow;
 }
 

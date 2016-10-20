@@ -71,8 +71,6 @@ $(document).ready(function(){
             playerHealth.html("Health: ?");
             playerHealth.insertAfter(playerImage);
         };
-        //console log
-        console.log("i created all the characters");
     };
 
     //declare functions
@@ -99,10 +97,8 @@ $(document).ready(function(){
             var stats = (Math.floor(Math.random() * characterStats.length));
             //assign the counter attack from this element to the character
             $(this).data("counterAttackPower", characterStats[stats].attackPower);
-                //console.log($(this).data("name") +" counter attack = " + $(this).data("counterAttackPower"));
             //assign the hit points from this element to the character
             $(this).data("HP", characterStats[stats].hitPoints);
-                //console.log($(this).data("name") +" starting HP = " + $(this).data("HP"));
             //remove the chosen element from the stats array
             characterStats.splice(stats,1);
         });
@@ -110,9 +106,7 @@ $(document).ready(function(){
     function restartGame(){
         //remove all characters
         $(".character").each( function() {
-            console.log("i will remove " + $(this).data("name"));
             $(this).remove();
-            console.log("i removed " + $(this).data("name"));
         });
         //reset the stats array
         setStats();
@@ -124,7 +118,6 @@ $(document).ready(function(){
         clearGameUpdates();
         //hide the restart button
         $(".restart-button").hide();
-        console.log("I restarted the game.  Game status is: " + gameStatus);
     };
     function clearGameUpdates() {
         $(".game-updates").each( function() {
@@ -141,22 +134,18 @@ $(document).ready(function(){
     gameStatus = "select player";
     //hide the restart button
     $(".restart-button").hide();
-    console.log("I started the game.  Game status is: " + gameStatus);
 
     //assign on click events
     $(".characters-to-select").on("click",".character", function(){  //$(".character").on("click", function(){
-        console.log("a character was clicked");
         if (gameStatus === "select player") {
             //set the properties of this character
             setPlayerProperties($(this));
             //move character to proper row
             $(".player").appendTo(".your-character");
-            console.log("the player should have moved");
             //set the properties of the other characters
             setOpponentProperties();
             //move opponents to the opponent area
             $(".opponent").appendTo(".enemies-to-attack");
-            console.log("the enemeies should have moved");
             //flip the gameStatus switch
             gameStatus = "select opponent";
         };
@@ -239,9 +228,7 @@ $(document).ready(function(){
     });
 
     $(".restart-button").on("click", function(){
-        if(gameStatus === "restart time"){
-            //console log
-            console.log("restarting game");      
+        if(gameStatus === "restart time"){  
             //restart game
             restartGame();
         };
